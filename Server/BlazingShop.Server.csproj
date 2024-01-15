@@ -18,4 +18,14 @@
   </ItemGroup>
 
 
+  <ItemGroup>
+    <None Remove="Services\" />
+    <None Remove="Services\CategoryService\" />
+    <None Remove="Services\ProductService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="Services\CategoryService\" />
+    <Folder Include="Services\ProductService\" />
+  </ItemGroup>
 </Project>

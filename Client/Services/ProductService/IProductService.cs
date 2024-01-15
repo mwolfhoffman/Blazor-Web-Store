@@ -8,7 +8,7 @@ namespace BlazingShop.Client.Services.ProductService
 
 		List<Product> Products { get; set; }
 
-		void LoadProducts();
+		Task LoadProducts();
 
 	}
 }
