@@ -5,6 +5,8 @@ using BlazingShop.Client.Services.ProductService;
 using BlazingShop.Client.Services.CategoryService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

@@ -1,13 +1,20 @@
 ﻿using System;
+using BlazingShop.Server.Services.CategoryService;
 using BlazingShop.Shared;
 
 namespace BlazingShop.Server.Services.ProductService
 {
 	public class ProductService : IProductService
 	{
+        private readonly ICategoryService _categoryService;
+        public ProductService(ICategoryService categoryService)
+        {
+            _categoryService = categoryService;
+        }
 
         public List<Product> Products { get; set; } = new List<Product>
-            {
+        { 
+
                 new Product
                 {
                     Id = 1,
@@ -102,12 +109,15 @@ namespace BlazingShop.Server.Services.ProductService
 
         public async Task<Product> GetProduct(int id)
         {
-            throw new NotImplementedException();
+            return Products.FirstOrDefault(p => p.Id == id);
         }
 
         public async Task<List<Product>> GetProductsByCategory(string categoryUrl)
+           
         {
-            throw new NotImplementedException();
+            Category category = await _categoryService.GetCategoryByUrl(categoryUrl);
+            return Products.Where(p => p.CategoryId == category.Id).ToList();
+
         }
 
         public async Task<List<Product>> SearchProducts(string searchText)

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlazingShop.Server.Services.CategoryService
 {
-	public class CategoryService : ICategoryService
+    public class CategoryService : ICategoryService
 	{
 
         public List<Category> Categories { get; set; } = new List<Category>
@@ -23,6 +23,11 @@ namespace BlazingShop.Server.Services.CategoryService
             await Task.Delay(0);
             return Categories;
           
+        }
+
+        public async Task<Category> GetCategoryByUrl(string categoryUrl)
+        {
+            return Categories.FirstOrDefault(c => c.Url.ToLower().Equals(categoryUrl.ToLower()));
         }
     }
 }
