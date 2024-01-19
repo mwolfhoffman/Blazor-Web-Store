@@ -10,7 +10,7 @@ namespace BlazingShop.Client.Services.ProductService
 
         public event Action OnChange;
 
-        public List<Product> Products { get; set; } = null;
+        public List<Product> Products { get; set; }
 
         public ProductService(HttpClient http)
         {
@@ -19,7 +19,6 @@ namespace BlazingShop.Client.Services.ProductService
 
         public async Task LoadProducts(string? categoryUrl)
         {
-            Console.WriteLine("fuck");
             if(categoryUrl == null)
             {
                 Products = Products = await _http.GetFromJsonAsync<List<Product>>($"api/Product");
@@ -35,16 +34,9 @@ namespace BlazingShop.Client.Services.ProductService
 
         public async Task<Product> GetProduct(int id)
         {
-            try
-            {
-            Console.WriteLine(id);
+           
+            Console.WriteLine("HERE IS THE ID" + id);
             return await _http.GetFromJsonAsync<Product>($"api/Product/{id}");
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-
         }
     }
 }

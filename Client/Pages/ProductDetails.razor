@@ -1,6 +1,5 @@
 ﻿@page "/product/{id:int}"
-@inject IProductService ProductService
-@implements IDisposable
+@inject IProductService productService
 
 <div class="media">
     <div class="media-img-big-wrapper mr-2">
@@ -23,14 +22,8 @@
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine(Id);
-        product = await ProductService.GetProduct(Id);
-        Console.WriteLine(product.Title);
-        ProductService.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        ProductService.OnChange -= StateHasChanged;
+        product = await productService.GetProduct(Id);
+        Console.WriteLine("Title", product.Title);
     }
 }
 
