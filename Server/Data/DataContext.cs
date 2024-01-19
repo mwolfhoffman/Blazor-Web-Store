@@ -1,4 +1,5 @@
 ﻿using BlazingShop.Shared;
+using BlazingShop.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazingShop.Server.Data
@@ -11,8 +12,9 @@ namespace BlazingShop.Server.Data
 
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<Product> Products { get; set; }
-
+        public DbSet<Edition> Editions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
         {
             modelBuilder.Entity<Category>().HasData(
                 new Category { Id = 1, Name = "Books", Url = "books", Icon = "book" },
@@ -103,6 +105,28 @@ namespace BlazingShop.Server.Data
                     DateCreated = new DateTime(2021, 1, 1)
                 }
                 );
+
+            modelBuilder.Entity<Edition>().HasData(
+                new Edition { Id = 1, Name = "Paperback" },
+                new Edition { Id = 2, Name = "E-book" },
+                new Edition { Id = 3, Name = "Audiobook" },
+                new Edition { Id = 4, Name = "PC" },
+                new Edition { Id = 5, Name = "Playstation" },
+                new Edition { Id = 6, Name = "Xbox" }
+                );
+
+            modelBuilder.SharedTypeEntity<Dictionary<string, object>>("EditionProduct")
+                .HasData(
+                    new { EditionsId = 1, ProductsId = 1},
+                    new { EditionsId = 2, ProductsId = 1 },
+                    new { EditionsId = 3, ProductsId = 1 },
+                    new { EditionsId = 1, ProductsId = 2 },
+                    new { EditionsId = 2, ProductsId = 2 },
+                    new { EditionsId = 4, ProductsId = 7 },
+                    new { EditionsId = 5, ProductsId = 7 },
+                    new { EditionsId = 6, ProductsId = 7 }
+                );
+
         }
     }
 }

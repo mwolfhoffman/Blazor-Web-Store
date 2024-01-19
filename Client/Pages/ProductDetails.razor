@@ -8,6 +8,18 @@
     <div class="media-body">
         <h2 class="mb-0">@product.Title</h2>
         <p>@product.Description</p>
+
+        @if(product.Editions != null && product.Editions.Count >0)
+        {
+            <div class="form-group">
+                   <select class="form-control">
+                       @foreach(var edition in product.Editions)
+                        {
+                          <option>@edition.Name</option>
+                        }
+                   </select>
+            </div>
+        }
         <button class="btn btn-primary"><i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart</button>
     </div>
 </div>

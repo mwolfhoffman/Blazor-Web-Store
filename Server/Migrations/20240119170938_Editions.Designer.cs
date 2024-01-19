@@ -3,6 +3,7 @@ using System;
 using BlazingShop.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazingShop.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240119170938_Editions")]
+    partial class Editions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -76,38 +79,6 @@ namespace BlazingShop.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Editions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Paperback"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "E-book"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Audiobook"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "PC"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Playstation"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Xbox"
-                        });
                 });
 
             modelBuilder.Entity("BlazingShop.Shared.Product", b =>
@@ -288,48 +259,6 @@ namespace BlazingShop.Server.Migrations
                     b.HasIndex("ProductsId");
 
                     b.ToTable("EditionProduct");
-
-                    b.HasData(
-                        new
-                        {
-                            EditionsId = 1,
-                            ProductsId = 1
-                        },
-                        new
-                        {
-                            EditionsId = 2,
-                            ProductsId = 1
-                        },
-                        new
-                        {
-                            EditionsId = 3,
-                            ProductsId = 1
-                        },
-                        new
-                        {
-                            EditionsId = 1,
-                            ProductsId = 2
-                        },
-                        new
-                        {
-                            EditionsId = 2,
-                            ProductsId = 2
-                        },
-                        new
-                        {
-                            EditionsId = 4,
-                            ProductsId = 7
-                        },
-                        new
-                        {
-                            EditionsId = 5,
-                            ProductsId = 7
-                        },
-                        new
-                        {
-                            EditionsId = 6,
-                            ProductsId = 7
-                        });
                 });
 
             modelBuilder.Entity("BlazingShop.Shared.Product", b =>
