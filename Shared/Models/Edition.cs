@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace BlazingShop.Shared.Models
+namespace BlazingShop.Shared
 {
 	public class Edition
 	{
