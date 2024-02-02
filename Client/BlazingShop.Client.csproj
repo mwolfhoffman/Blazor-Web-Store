@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.11" PrivateAssets="all" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
     <PackageReference Include="Blazored.Toast" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.15" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,11 +29,13 @@
     <None Remove="Services\ProductService\" />
     <None Remove="Services\CategoryService\" />
     <None Remove="Services\CartService\" />
+    <None Remove="Services\StatsService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Services\ProductService\" />
     <Folder Include="Services\CategoryService\" />
     <Folder Include="Services\CartService\" />
+    <Folder Include="Services\StatsService\" />
   </ItemGroup>
 </Project>
