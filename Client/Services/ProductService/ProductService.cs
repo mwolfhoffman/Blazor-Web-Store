@@ -35,7 +35,6 @@ namespace BlazingShop.Client.Services.ProductService
         public async Task<Product> GetProduct(int id)
         {
            
-            Console.WriteLine("HERE IS THE ID" + id);
             return await _http.GetFromJsonAsync<Product>($"api/Product/{id}");
         }
     }
