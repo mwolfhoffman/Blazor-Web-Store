@@ -17,13 +17,8 @@
                 </a>
                 <p>@product.Description</p>
 
-                @if (product.OriginalPrice > product.Price)
-{
-                        <h6 class="text-muted original-price">$@product.OriginalPrice</h6>
-
-}
                 <h5 class="price">
-                    $@product.OriginalPrice
+                    @GetPriceText(product)
                 </h5>
             </div>
         </li>
@@ -37,8 +32,26 @@
     }
 
     public void Dispose()
-{
+    {
         ProductService.OnChange -= StateHasChanged;
-}
+    }
+
+    public string GetPriceText(Product product)
+    {
+        var variants = product.Variants;
+
+        if(variants.Count == 0)
+        {
+            return String.Empty;
+        }
+        if(variants.Count == 1)
+    {
+            return $"${variants[0].Price}";
+    }
+
+        decimal minPrice = variants.Min(v => v.Price);
+        return $"Starting at ${minPrice}";
+
+    }
 
 }

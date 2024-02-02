@@ -1,6 +1,12 @@
 ﻿@page "/product/{id:int}"
-@inject IProductService ProductService
-@implements IDisposable
+@inject IProductService productService
+@inject ILocalStorageService localStorage
+@inject IToastService toastService
+@inject ICartService cartService 
+
+<div class="views">
+    <i class="oi oi-eye"></i> @product.Views.ToString("0##")
+</div>
 
 <div class="media">
     <div class="media-img-big-wrapper mr-2">
@@ -9,28 +15,61 @@
     <div class="media-body">
         <h2 class="mb-0">@product.Title</h2>
         <p>@product.Description</p>
-        <button class="btn btn-primary"><i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart</button>
-    </div>
+
+        @if (product.Variants != null && product.Variants.Count > 0)
+        {
+            <div class="form-group">
+                <select class="form-control" @bind="currentEditionId">
+                    @foreach (var variant in product.Variants)
+                    {
+                        <option value="@variant.EditionId">@variant.Edition.Name</option>
+                    }
+                </select>
+            </div>
+        }
+
+        @if (GetSelectedVariant() != null)
+            {
+                @if(GetSelectedVariant().OriginalPrice > GetSelectedVariant().Price)
+                {
+                    <h6 class="text-muted original-price">@GetSelectedVariant().OriginalPrice</h6>
+                }
+                    <h4 class="price">@GetSelectedVariant().Price</h4>
+            }
+
+
+            <button class="btn btn-primary" @onclick="AddToCart"><i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart</button>
+        </div>
 </div>
 
 
 @code {
     private Product? product { get; set; } = new Product();
 
+    private int currentEditionId = 1;
+
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine(Id);
-        product = await ProductService.GetProduct(Id);
-        Console.WriteLine(product.Title);
-        ProductService.OnChange += StateHasChanged;
+        product = await productService.GetProduct(Id);
+
+        if(product.Variants.Count>0)
+        {
+            currentEditionId = product.Variants[0].EditionId;
+        }
     }
 
-    public void Dispose()
+    private ProductVariant GetSelectedVariant()
     {
-        ProductService.OnChange -= StateHasChanged;
+        var variant = product.Variants.FirstOrDefault(v => v.EditionId == currentEditionId);
+        return variant;
+    }
+
+    private async Task AddToCart()
+    {
+        await cartService.AddToCart(GetSelectedVariant());
     }
 }
 

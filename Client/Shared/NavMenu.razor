@@ -1,5 +1,6 @@
-﻿@inject ICategoryService CategoryService
-
+﻿@inject ICategoryService categoryService
+@inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider authStateProvider
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Blazing Shop</a>
@@ -16,16 +17,33 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <hr/>
-               @foreach (Category category in CategoryService.Categories)
-                   {
+        <hr />
+        @foreach (Category category in categoryService.Categories)
+        {
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="@category.Url" Match="NavLinkMatch.All">
                     <span class="oi oi-@category.Icon" aria-hidden="true"></span> @category.Name
                 </NavLink>
             </div>
-                   
-           }
+        }
+        <hr />
+        <AuthorizeView>
+            <NotAuthorized>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/login" Match="NavLinkMatch.All">
+                <span class="oi oi-account-login" aria-hidden="true"></span> Login
+            </NavLink>
+        </div>
+            </NotAuthorized>
+            <Authorized>
+                <div class="nav-item px-3">
+                    <a class="nav-link" @onclick="logout" style="cursor:pointer">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                    </a>
+                </div>
+            </Authorized>
+        </AuthorizeView>
     </nav>
 </div>
 
@@ -41,6 +59,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await CategoryService.LoadCategories();
+        await categoryService.LoadCategories();
+    }
+
+    private async void logout()
+    {
+       await localStorage.RemoveItemAsync("username");
+        await authStateProvider.GetAuthenticationStateAsync();
     }
 }
