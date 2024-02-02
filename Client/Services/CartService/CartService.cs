@@ -6,16 +6,16 @@ using Blazored.Toast.Services;
 
 namespace BlazingShop.Client.Services.CartService
 {
-	public class CartService : ICartService
-	{
+    public class CartService : ICartService
+    {
         private readonly ILocalStorageService _localStorageService;
 
         private readonly IToastService _toastService;
 
         private readonly IProductService _productService;
-            
+
         public CartService(ILocalStorageService localStorageService, IToastService toastService, IProductService productService)
-		{
+        {
             _localStorageService = localStorageService;
             _productService = productService;
             _toastService = toastService;
@@ -23,19 +23,30 @@ namespace BlazingShop.Client.Services.CartService
 
         public event Action OnChange;
 
-        public async Task AddToCart(ProductVariant productVariant)
+        public async Task AddToCart(CartItem item)
         {
-            var cart = await _localStorageService.GetItemAsync<List<ProductVariant>>("cart");
+            var cart = await _localStorageService.GetItemAsync<List<CartItem>>("cart");
 
-            if(cart == null)
+            if (cart == null)
             {
-                cart = new List<ProductVariant>();
+                cart = new List<CartItem>();
             }
-            cart.Add(productVariant);
+
+            var sameItem = cart.Find(x => x.ProductId == item.ProductId && x.EditionId == item.EditionId);
+
+            if (sameItem == null)
+            {
+
+                cart.Add(item);
+            }
+            else
+            {
+                sameItem.Quantity += item.Quantity;
+            }
 
             await _localStorageService.SetItemAsync("cart", cart);
 
-            var product = await _productService.GetProduct(productVariant.ProductId);
+            var product = await _productService.GetProduct(item.ProductId);
             _toastService.ShowSuccess(product.Title + " added to cart.");
 
             OnChange.Invoke();
@@ -43,7 +54,7 @@ namespace BlazingShop.Client.Services.CartService
 
         public async Task DeleteItem(CartItem item)
         {
-            var cart = await _localStorageService.GetItemAsync<List<ProductVariant>>("cart");
+            var cart = await _localStorageService.GetItemAsync<List<CartItem>>("cart");
 
             if (cart == null)
             {
@@ -62,38 +73,21 @@ namespace BlazingShop.Client.Services.CartService
 
         public async Task<List<CartItem>> GetCartItems()
         {
-            var result = new List<CartItem>();
 
-            var cart = await _localStorageService.GetItemAsync<List<ProductVariant>>("cart");
+            var cart = await _localStorageService.GetItemAsync<List<CartItem>>("cart");
 
             if (cart == null)
             {
-                return result;
+                return new List<CartItem>(); ;
             }
 
-            foreach (var item in cart)
-            {
-                var product = await _productService.GetProduct(item.ProductId);
-                var cartItem = new CartItem
-                {
-                    ProductId = product.Id,
-                    ProductTitle = product.Title,
-                    Image = product.Image,
-                    EditionId = item.EditionId,
-                };
+            return cart;
+        }
 
-                var variant = product.Variants.Find(v => v.EditionId == item.EditionId);
-
-                if(variant != null)
-                {
-                    cartItem.EditionName = variant.Edition?.Name;
-                    cartItem.Price = variant.Price;
-                }
-
-                result.Add(cartItem);
-            }
-
-            return result;
+        public async Task EmptyCart()
+        {
+            await _localStorageService.RemoveItemAsync("cart");
+            OnChange.Invoke();
         }
     }
 }

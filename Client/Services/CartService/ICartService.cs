@@ -3,14 +3,15 @@ using BlazingShop.Shared;
 
 namespace BlazingShop.Client.Services.CartService
 {
-	public interface ICartService
-	{
+    public interface ICartService
+    {
 
-		event Action OnChange;
+        event Action OnChange;
 
-		Task AddToCart(ProductVariant productService);
-		Task<List<CartItem>> GetCartItems();
-		Task DeleteItem(CartItem item);
-	}
+        Task AddToCart(CartItem cartItem);
+        Task<List<CartItem>> GetCartItems();
+        Task DeleteItem(CartItem item);
+        Task EmptyCart();
+    }
 }
 

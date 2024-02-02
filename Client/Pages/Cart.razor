@@ -1,40 +1,77 @@
 ﻿@page "/cart"
 @inject ICartService cartService 
 
-<h3>Cart</h3>
+@if (!orderPlaced)
+{
+        <h3>Cart</h3>
 
-@if (cartItems == null || cartItems.Count <= 0)
+    @if (cartItems == null || cartItems.Count <= 0)
     {
-        <span>You have no items in your cart.</span>
+                        <span>You have no items in your cart.</span>
     }
     else
     {
-        <div>
-            @foreach(var item in cartItems)
+                        <div>
+            @foreach (var item in cartItems)
             {
-                    <div class="item-container">
-                        <div class="item-image-wrapper">
-                            <img src="@item.Image" class="item-image"/>
-                        </div>
-                        <div class="item-name">
-                            <h5><a href="/product/@item.ProductId"> @item.ProductTitle</a></h5>
-                            <span>@item.EditionName</span> <br/>
-                            <button class="btn-delete" @onclick="(()=>DeleteItem(item))" >Delete</button>
-                        </div>
-                        <div class="item-price">$@item.Price</div>
-                    </div>
+                                            <div class="item-container">
+                                                <div class="item-image-wrapper">
+                                                    <img src="@item.Image" class="item-image"/>
+                                                </div>
+                                                <div class="item-name">
+                                                    <h5><a href="/product/@item.ProductId"> @item.ProductTitle</a></h5>
+                                                    <span>@item.EditionName</span> <br/>
+                                                    <button class="btn-delete" @onclick="(()=>DeleteItem(item))" >Delete</button>
+
+                                        <EditForm Model="item">
+                                           <InputNumber id="quantity" @bind-Value="item.Quantity" class="form-control" style="width:70px"></InputNumber>
+                                        </EditForm>
+
+                                                </div>
+                                                <div class="item-price">$@(item.Price * item.Quantity)</div>
+                                            </div>
             }
-            <div class="item-price">
-                Total (@cartItems.Count) : $@cartItems.Sum(item => item.Price);
-            </div>
-        </div>
+                            <div class="item-price">
+                                Total (@cartItems.Count) : $@cartItems.Sum(item => item.Price * item.Quantity);
+                            </div>
+
+                            <div style="text-align:center; margin-top:10px;">
+                                <button class="btn btn-primary btn-lg" @onclick="PlaceOrder">Place Order</button>
+                            </div>
+                        </div>
     }
+}
+else
+{
+        <h3>Thank you for your order!</h3>
+        <h4>Here's what you get: </h4>
+    @foreach (var item in cartItems)
+    {
+                                    <div class="item-container">
+                                        <div class="item-image-wrapper">
+                                            <img src="@item.Image" class="item-image"/>
+                                        </div>
+                                        <div class="item-name">
+                                            <h5><a href="/product/@item.ProductId"> @item.ProductTitle</a></h5>
+                                            <span>@item.EditionName</span> <br/>
+
+                                        </div>
+                                        <div class="item-price">$@(item.Price * item.Quantity)</div>
+                                    </div>
+    }
+                    <div class="item-price">
+                Total (@cartItems.Count) : $@cartItems.Sum(item => item.Price * item.Quantity);
+            </div>
+
+                   
+}
 
 
 
 
 @code {
     List<CartItem> cartItems = new List<CartItem>();
+    bool orderPlaced = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -45,6 +82,12 @@
     {
         await cartService.DeleteItem(item);
         cartItems = await cartService.GetCartItems();
+    }
+
+    private async Task PlaceOrder()
+    {
+        orderPlaced = true;
+        await cartService.EmptyCart();
     }
 }
 
