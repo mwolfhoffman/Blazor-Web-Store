@@ -39,7 +39,14 @@ namespace BlazingShop.Server.Controllers
             return Ok(await _productSevice.GetProductsByCategory(categoryUrl));
         }
 
-      
+
+        [HttpGet("Search/{searchText}")]
+        public async Task<ActionResult<List<Product>>> SearchProducts(string searchText)
+        {
+            return Ok(await _productSevice.SearchProducts(searchText));
+        }
+
+
     }
 }
 
