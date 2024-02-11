@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  blazingshop.server:
-    image: ${DOCKER_REGISTRY-}blazingshop
-    build:
-      context: .
-      dockerfile: Server/Dockerfile
