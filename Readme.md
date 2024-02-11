@@ -1,4 +1,4 @@
-﻿# Blazing Shop
+﻿# Blazor Web Store
 
 An Ecommerce store using .NET Server and Blazor WASM Client.
 

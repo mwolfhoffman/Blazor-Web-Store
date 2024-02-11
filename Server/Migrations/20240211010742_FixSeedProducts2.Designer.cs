@@ -3,6 +3,7 @@ using System;
 using BlazingShop.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazingShop.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240211010742_FixSeedProducts2")]
+    partial class FixSeedProducts2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
@@ -50,14 +53,14 @@ namespace BlazingShop.Server.Migrations
                         new
                         {
                             Id = 2,
-                            Icon = "image",
+                            Icon = "tree",
                             Name = "Outdoor",
                             Url = "outoor"
                         },
                         new
                         {
                             Id = 3,
-                            Icon = "map-marker",
+                            Icon = "paw",
                             Name = "Dogs",
                             Url = "dogs"
                         });

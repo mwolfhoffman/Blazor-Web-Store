@@ -4,7 +4,7 @@
 @inject IProductService productService
 @inject ISyncLocalStorageService localStorage
 @inject IStatsService statsService
-<PageTitle>Blazing Shop</PageTitle>
+<PageTitle>Blazor Web Store</PageTitle>
 
 
 @if(category != null)
@@ -20,7 +20,7 @@
                 <h1>Welcome Back, @localStorage.GetItemAsString("username")!</h1>
             </Authorized>
         <NotAuthorized>
-        <h1>Welcome To Blazing Shop!</h1>
+        <h1>Welcome To Blazor Web Store!</h1>
         </NotAuthorized>
         </AuthorizeView>
 <ProductList/>
