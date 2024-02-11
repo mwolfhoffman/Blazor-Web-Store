@@ -29,6 +29,7 @@ namespace BlazingShop.Client.Services.CartService
 
         public async Task AddToCart(CartItem item)
         {
+            Console.WriteLine("Adding to cart...");
             var cart = await _localStorageService.GetItemAsync<List<CartItem>>("cart");
 
             if (cart == null)

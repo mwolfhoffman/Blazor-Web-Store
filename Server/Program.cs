@@ -5,9 +5,7 @@ using BlazingShop.Server.Services.ProductService;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using BlazingShop.Server.Services.PaymentService;
-using DotNetEnv;
 
-Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 

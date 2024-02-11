@@ -1,19 +1,24 @@
 using Stripe;
 using Stripe.Checkout;
 using BlazingShop.Shared;
+using Microsoft.Extensions.Configuration;
 
 namespace BlazingShop.Server.Services.PaymentService
 {
     public class PaymentService : IPaymentService
     {
 
-        public PaymentService()
+        private readonly IConfiguration _configuration;
+
+
+        public PaymentService(IConfiguration configuration)
         {
-            StripeConfiguration.ApiKey = System.Environment.GetEnvironmentVariable("STRIPE_PRIVATE_KEY");
+            _configuration = configuration;
+            StripeConfiguration.ApiKey = _configuration["StripePrivateKey"];
         }
         public Session CreateCheckoutSession(List<CartItem> cartItems)
         {
-            Console.WriteLine("HERE");
+            cartItems.Select(x => x.ProductTitle).ToList().ForEach(Console.WriteLine);
             var lineItems = new List<SessionLineItemOptions>();
             cartItems.ForEach(c => lineItems.Add(new SessionLineItemOptions
             {
