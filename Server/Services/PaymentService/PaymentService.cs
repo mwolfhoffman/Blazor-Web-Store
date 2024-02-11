@@ -44,8 +44,10 @@ namespace BlazingShop.Server.Services.PaymentService
 
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "localhost:5288/order-successful",
-                CancelUrl = "localhost:5288/cart",
+                SuccessUrl = _configuration.GetSection("StripeCheckoutRedirects:OrderSuccess").Value,
+                CancelUrl = _configuration.GetSection("StripeCheckoutRedirects:OrderCanceled").Value,
+
+
             };
             var service = new Stripe.Checkout.SessionService();
             Session session = service.Create(options);
